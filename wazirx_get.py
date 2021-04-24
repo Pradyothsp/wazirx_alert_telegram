@@ -11,13 +11,17 @@ MARKET_TICKER_URL = '/api/v2/tickers'
 URL = BASE_URL + MARKET_TICKER_URL
 
 
-def get_data(url, unit):
+def get_data(url, list_of_units):
     data = {}
     json_data = json.dumps(data)
     r = requests.get(url=url, data=json_data)
     data = r.json()
-    data = data.get(unit)
-    return data
+    list_data = []
+    for unit in list_of_units:
+        list_data.append(data.get(unit))
+    return list_data
 
 
-data = get_data(URL, 'dogeinr')
+list_of_units = ['etcinr', 'dogeinr']
+datas = get_data(URL, list_of_units)
+# print(data)
