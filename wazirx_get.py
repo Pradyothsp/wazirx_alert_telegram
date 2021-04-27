@@ -22,6 +22,6 @@ def get_data(url, list_of_units):
     return list_data
 
 
-list_of_units = ['etcinr', 'dogeinr']
+list_of_units = ['dogeinr', 'etcinr']
 datas = get_data(URL, list_of_units)
 # print(data)
