@@ -1,10 +1,10 @@
-import logging
 import os
 
 import telebot
 from discord_webhook import DiscordWebhook
 
-from wazirx_get import datas, logging
+from log import logger
+from wazirx_get import datas
 
 # initializing telegram bot
 telegram_bot = telebot.TeleBot(
@@ -30,16 +30,22 @@ def create_msg(datas):
 
 
 def telegram_send(chat_id, message):
-    '''
-        This function will send notification to telegram
+    ''' This function will send notification to telegram.
+
+        Parameters
+        ----------
+        chat_id : int
+            Telegram chat id
+        message : str
+            Message to be sent to telegram
     '''
     try:
         telegram_bot.send_message(chat_id, message)
-        logging.info('telegram message sent')
+        logger.info('telegram message sent')
         return True
 
     except:
-        logging.warning('telegram message not sent')
+        logger.error('telegram message not sent')
         return False
 
 
@@ -50,14 +56,17 @@ def discord_send(url, message):
     try:
         webhook = DiscordWebhook(url=url, content=message)
         webhook.execute()
-        logging.info('discord message sent')
+        logger.info('discord message sent')
         return True
 
     except:
-        logging.warning('telegram message not sent')
+        logger.error('telegram message not sent')
         return False
 
-    
+def main():
+    message = create_msg(datas)
+    telegram_send(os.environ.get('TELEGRAM_CHAT_ID'), message)
+    discord_send(os.environ.get('DISCORD_WEBHOOK_URL'), message)
+
 if __name__ == '__main__':
-    # telegram_send(os.environ.get('TELEGRAM_CHAT_ID'), create_msg(datas))
-    discord_send(os.environ.get('DISCORD_WEBHOOK_URL'), create_msg(datas))
+    main()

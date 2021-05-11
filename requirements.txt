@@ -1,3 +1,4 @@
 requests
 pyTelegramBotAPI
 discord-webhook
+pyyaml
